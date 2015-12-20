@@ -86,4 +86,8 @@
     <!-- Screenshot QS tile -->
     <string name="quick_settings_screenshot_label">Скріншот</string>
     <string name="quick_settings_region_screenshot_label">Частковий скріншот</string>
+
+    <!-- Screenrecord QS tile -->
+    <string name="quick_settings_screenrecord">Запис екрану</string>
+    <string name="quick_settings_screenrecord_on">Запис...</string>
 </resources>
