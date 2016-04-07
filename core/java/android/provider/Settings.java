@@ -3716,6 +3716,11 @@ public final class Settings {
         public static final String SHOW_USB_MODE_DIALOG = "show_usb_mode_dialog";
 
         /**
+         * @hide
+         */
+        public static final String AMBIENT_DISPLAY_SHOW_BATTERY = "ambient_display_show_battery";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
