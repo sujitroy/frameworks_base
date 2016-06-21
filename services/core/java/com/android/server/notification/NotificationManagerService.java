@@ -86,9 +86,6 @@ import android.media.AudioManager;
 import android.media.AudioManagerInternal;
 import android.media.AudioSystem;
 import android.media.IRingtonePlayer;
-import android.media.session.MediaController;
-import android.media.session.MediaSessionManager;
-import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
@@ -151,6 +148,8 @@ import com.android.server.policy.PhoneWindowManager;
 import com.android.server.statusbar.StatusBarManagerInternal;
 import com.android.server.notification.ManagedServices.UserProfiles;
 
+import cyanogenmod.media.AudioSessionInfo;
+import cyanogenmod.media.CMAudioManager;
 import cyanogenmod.providers.CMSettings;
 import cyanogenmod.util.ColorUtils;
 
@@ -1010,15 +1009,39 @@ public class NotificationManagerService extends SystemService {
         }
     }
 
+    private BroadcastReceiver mMediaSessionReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateForActiveSessions();
+        }
+    };
+
+    private void updateForActiveSessions() {
+        CMAudioManager manager = CMAudioManager.getInstance(getContext());
+        List<AudioSessionInfo> sessions = manager.listAudioSessions(AudioManager.STREAM_MUSIC);
+        mActiveMedia = false;
+        for (AudioSessionInfo sessionInfo : sessions) {
+            if (sessionInfo.getSessionId() > 0) {
+                mActiveMedia = true;
+                break;
+            }
+        }
+    }
+
     private void updateDisableDucking() {
         if (!mSystemReady) {
             return;
         }
-        final MediaSessionManager mediaSessionManager = (MediaSessionManager) getContext()
-                .getSystemService(Context.MEDIA_SESSION_SERVICE);
-        mediaSessionManager.removeOnActiveSessionsChangedListener(mSessionListener);
+        try {
+            getContext().unregisterReceiver(mMediaSessionReceiver);
+        } catch (IllegalArgumentException e) {
+            // Never registered
+        }
         if (mDisableDuckingWhileMedia) {
-            mediaSessionManager.addOnActiveSessionsChangedListener(mSessionListener, null);
+            updateForActiveSessions();
+            IntentFilter intentFilter = new IntentFilter(CMAudioManager
+                    .ACTION_AUDIO_SESSIONS_CHANGED);
+            getContext().registerReceiver(mMediaSessionReceiver, intentFilter);
         }
     }
 
@@ -3002,21 +3025,6 @@ public class NotificationManagerService extends SystemService {
                     REASON_GROUP_SUMMARY_CANCELED, false /* sendDelete */);
         }
     }
-
-    private MediaSessionManager.OnActiveSessionsChangedListener mSessionListener =
-            new MediaSessionManager.OnActiveSessionsChangedListener() {
-        @Override
-        public void onActiveSessionsChanged(@Nullable List<MediaController> controllers) {
-            for (MediaController activeSession : controllers) {
-                PlaybackState playbackState = activeSession.getPlaybackState();
-                if (playbackState != null && playbackState.getState() == PlaybackState.STATE_PLAYING) {
-                    mActiveMedia = true;
-                    return;
-                }
-            }
-            mActiveMedia = false;
-        }
-    };
 
     @VisibleForTesting
     void buzzBeepBlinkLocked(NotificationRecord record) {
