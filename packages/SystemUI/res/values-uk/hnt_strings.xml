@@ -22,4 +22,8 @@
 
     <!-- Recents memory bar -->
     <string name="recents_free_ram">Вільно пам\'яті: %1$d МБ</string>
+
+    <!-- Reboot/Recovery QS Tile -->
+    <string name="quick_settings_reboot_label">Перезавантаження</string>
+    <string name="quick_settings_reboot_recovery_label">В рекавері</string>
 </resources>
