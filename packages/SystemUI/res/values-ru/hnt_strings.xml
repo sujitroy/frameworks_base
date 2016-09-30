@@ -82,4 +82,7 @@
     <!-- Language QS Tile -->
     <string name="quick_settings_locale_label">Язык</string>
     <string name="quick_settings_locale_more_locales_toast">Настройте язык, чтобы включить функцию переключения</string>
+
+    <!-- Screenshot QS tile -->
+    <string name="quick_settings_screenshot_label">Скриншот</string>
 </resources>
