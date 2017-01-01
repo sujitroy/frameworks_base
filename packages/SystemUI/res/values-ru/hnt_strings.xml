@@ -78,4 +78,8 @@
     <string name="quick_settings_navbar_title">Панель навигации</string>
     <string name="quick_settings_navbar">Панель навигации вкл.</string>
     <string name="quick_settings_navbar_off">Панель навигации выкл.</string>
+
+    <!-- Language QS Tile -->
+    <string name="quick_settings_locale_label">Язык</string>
+    <string name="quick_settings_locale_more_locales_toast">Настройте язык, чтобы включить функцию переключения</string>
 </resources>
