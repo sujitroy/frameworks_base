@@ -67,4 +67,10 @@
     <string name="quick_settings_compass_SW">ЮЗ</string>
     <string name="quick_settings_compass_W">З</string>
     <string name="quick_settings_compass_NW">СЗ</string>
+
+    <!-- Sound QS Tile -->
+    <string name="quick_settings_sound_label">Звук</string>
+    <string name="quick_settings_sound_ring">Звук вкл.</string>
+    <string name="quick_settings_sound_vibrate">Вибрация</string>
+    <string name="quick_settings_sound_silent">Без звука</string>
 </resources>
