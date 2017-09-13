@@ -10330,6 +10330,23 @@ public class PackageManagerService extends IPackageManager.Stub {
         }
 
         Trace.traceEnd(TRACE_TAG_PACKAGE_MANAGER);
+
+        allowSDWrite(pkg);
+    }
+
+    private void allowSDWrite(PackageParser.Package pkg) {
+        PackageSetting packageSetting = (PackageSetting) pkg.mExtras;
+        if (packageSetting != null) {
+            PermissionsState permissionsState = packageSetting.getPermissionsState();
+            ArrayMap arrayMap = mSettings.mPermissions;
+            String str = "android.permission.WRITE_MEDIA_STORAGE";
+            if (!permissionsState.hasInstallPermission(str)) {
+                BasePermission basePermission = (BasePermission) arrayMap.get(str);
+                if (basePermission != null) {
+                    permissionsState.grantInstallPermission(basePermission);
+                }
+            }
+        }
     }
 
     private boolean isNewPlatformPermissionForPackage(String perm, PackageParser.Package pkg) {
