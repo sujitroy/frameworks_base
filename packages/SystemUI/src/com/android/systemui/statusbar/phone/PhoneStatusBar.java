@@ -498,6 +498,16 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(CMSettings.System.getUriFor(
                     CMSettings.System.SHOW_SU_INDICATOR),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                     CMSettings.Secure.QS_ROWS_PORTRAIT),
+                   false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_LANDSCAPE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_COLUMNS),
+                    false, this, UserHandle.USER_ALL);
+            update();
         }
 
         @Override
@@ -512,6 +522,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		    if (uri.equals(CMSettings.System.getUriFor(
                     CMSettings.System.SHOW_SU_INDICATOR))) {
                     UpdateSomeViews();
+            } else if (uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_PORTRAIT))
+                    || uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_LANDSCAPE))) {
+                    updateResources();
+            } else if (uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_COLUMNS))) {
+                    updateResources();
             }
             update();
         }
