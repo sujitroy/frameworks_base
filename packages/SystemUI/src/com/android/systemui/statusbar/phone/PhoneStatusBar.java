@@ -512,6 +512,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.LOCK_QS_DISABLED),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.AMBIENT_DOZE_CUSTOM_BRIGHTNESS),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -545,6 +548,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         @Override
         public void update() {
             ContentResolver resolver = mContext.getContentResolver();
+
+            int defaultDozeBrightness = mContext.getResources().getInteger(
+                    com.android.internal.R.integer.config_screenBrightnessDoze);
+            int customDozeBrightness = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.AMBIENT_DOZE_CUSTOM_BRIGHTNESS, defaultDozeBrightness, UserHandle.USER_CURRENT);
+            StatusBarWindowManager.updateSbCustomBrightnessDozeValue(customDozeBrightness);
 
             if (mNotificationPanel != null) {
                 mNotificationPanel.updateSettings();

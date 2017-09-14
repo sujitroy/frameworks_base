@@ -76,7 +76,7 @@ public class StatusBarWindowManager implements RemoteInputController.Callback,
     private boolean mHasTopUiChanged;
     private int mBarHeight;
     private boolean mKeyguardScreenRotation;
-    private final float mScreenBrightnessDoze;
+    private static float mScreenBrightnessDoze;
     private final State mCurrentState = new State();
 
     private BlurLayer mBlurLayer;
@@ -446,6 +446,10 @@ public class StatusBarWindowManager implements RemoteInputController.Callback,
         final Point xy = new Point();
         wm.getDefaultDisplay().getRealSize(xy);
         return xy;
+    }
+
+    public static void updateSbCustomBrightnessDozeValue(int value) {
+        mScreenBrightnessDoze = value / 255f;
     }
 
     private static class State {
