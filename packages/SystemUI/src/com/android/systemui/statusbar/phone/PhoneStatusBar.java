@@ -482,7 +482,64 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 
-    class DevForceNavbarObserver extends ContentObserver {
+
+
+    class SettingsObserver extends UserContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void observe() {
+            super.observe();
+
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(CMSettings.System.getUriFor(
+                    CMSettings.System.SHOW_SU_INDICATOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                     CMSettings.Secure.QS_ROWS_PORTRAIT),
+                   false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_LANDSCAPE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_COLUMNS),
+                    false, this, UserHandle.USER_ALL);
+            update();
+        }
+
+        @Override
+        protected void unobserve() {
+            super.unobserve();
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
+        }
+
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+		    if (uri.equals(CMSettings.System.getUriFor(
+                    CMSettings.System.SHOW_SU_INDICATOR))) {
+                    UpdateSomeViews();
+            } else if (uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_PORTRAIT))
+                    || uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_ROWS_LANDSCAPE))) {
+                    updateResources();
+            } else if (uri.equals(CMSettings.Secure.getUriFor(
+                    CMSettings.Secure.QS_COLUMNS))) {
+                    updateResources();
+            }
+            update();
+        }
+
+        @Override
+        public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+        }
+    }
+
+   class DevForceNavbarObserver extends ContentObserver {
         DevForceNavbarObserver(Handler handler) {
             super(handler);
         }
