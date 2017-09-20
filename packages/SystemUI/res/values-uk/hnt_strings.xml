@@ -26,4 +26,28 @@
     <!-- Reboot/Recovery QS Tile -->
     <string name="quick_settings_reboot_label">Перезавантаження</string>
     <string name="quick_settings_reboot_recovery_label">В рекавері</string>
+
+    <!-- Perf Profile Tile -->
+    <string name="qs_tile_performance">Режим продуктивності</string>
+    <!-- Content description of the battery mode tile in quick settings when on, power save mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_pwrsv">Режим продуктивності: економія енергії.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, balanced mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_bal">Режим продуктивності: збалансований.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, performance mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_perf">Режим продуктивності: продуктивність.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, efficiency mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_bias_power">Режим продуктивності: ефективність.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, quick mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_bias_perf">Режим продуктивності: швидкий.</string>
+    <!-- Announcement made when the battery mode tile changes to power save (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_pwrsv">Режим продуктивності змінено на економічний.</string>
+    <!-- Announcement made when the battery mode tile changes to balanced (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_bal">Режим продуктивності змінено на збалансований.</string>
+    <!-- Announcement made when the battery mode tile changes to performance (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_perf">Режим продуктивності змінено на продуктивний.</string>
+    <!-- Announcement made when the battery mode tile changes to efficiency (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_bias_power">Режим продуктивності змінено на ефективний.</string>
+    <!-- Announcement made when the battery mode tile changes to quick (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_bias_perf">Режим продуктивності змінено на швидкий.</string>
+    <string name="quick_settings_performance_profile_detail_title">Режим продуктивності</string>
 </resources>
