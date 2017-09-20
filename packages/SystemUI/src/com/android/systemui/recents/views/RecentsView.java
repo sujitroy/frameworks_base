@@ -417,12 +417,19 @@ public class RecentsView extends FrameLayout {
                     mFloatingButton.getLayoutParams();
             boolean isLandscape = mContext.getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
-            if (isLandscape) {
-                params.topMargin = mContext.getResources().
-                      getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height);
-            } else {
-                params.topMargin = 2*(mContext.getResources().
+            boolean enableMemDisplay = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.SYSTEMUI_RECENTS_MEM_DISPLAY, 0) == 1;
+            if (enableMemDisplay) {
+                params.topMargin = 3*(mContext.getResources().
                     getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height));
+            } else {
+				if (isLandscape) {
+                    params.topMargin = mContext.getResources().
+                          getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height);
+                } else {
+                    params.topMargin = 2*(mContext.getResources().
+                        getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height));
+                }
             }
 
             switch (clearRecentsLocation) {
