@@ -3795,6 +3795,12 @@ public final class Settings {
         public static final String QUICK_TILE_ADD = "quick_tile_add";
 
         /**
+         * Whether to use the MTP by default after connecting to PC
+         * @hide
+         */
+        public static final String MTP_DIRTY_HACK = "mtp_dirty_hack";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
