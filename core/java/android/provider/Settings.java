@@ -7304,6 +7304,12 @@ public final class Settings {
         public static final String CHARGING_SOUNDS_ENABLED = "charging_sounds_enabled";
 
         /**
+         * Whether to play a battery fully charged sound.
+         * @hide
+         */
+        public static final String BATTERY_FULLY_CHARGED_SOUND_ENABLED = "battery_fully_charged_sound_enabled";
+
+        /**
          * Whether we keep the device on while the device is plugged in.
          * Supported values are:
          * <ul>
@@ -9428,6 +9434,7 @@ public final class Settings {
             POWER_SOUNDS_ENABLED,
             DOCK_SOUNDS_ENABLED,
             CHARGING_SOUNDS_ENABLED,
+            BATTERY_FULLY_CHARGED_SOUND_ENABLED,
             USB_MASS_STORAGE_ENABLED,
             ENABLE_ACCESSIBILITY_GLOBAL_GESTURE_ENABLED,
             WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON,
