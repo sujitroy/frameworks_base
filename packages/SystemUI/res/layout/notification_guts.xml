@@ -26,8 +26,7 @@
         android:orientation="vertical"
         android:paddingStart="@*android:dimen/notification_content_margin_start"
         android:paddingEnd="8dp"
-        android:background="@color/notification_guts_bg_color"
-        android:theme="@*android:style/Theme.DeviceDefault.Light">
+        android:background="@color/notification_guts_bg_color">
 
     <!-- header -->
     <LinearLayout

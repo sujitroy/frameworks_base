@@ -21,6 +21,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.Nullable;
+import android.app.IThemeCallback;
+import android.app.ThemeManager;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.AnimationDrawable;
@@ -28,6 +30,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.util.AttributeSet;
@@ -190,6 +193,9 @@ public class ExpandableNotificationRow extends ActivatableNotificationView {
     private View mChildAfterViewWhenDismissed;
     private View mGroupParentWhenDismissed;
     private boolean mRefocusOnDismiss;
+
+    private Handler mHandler = new Handler();
+    private ThemeManager mThemeManager;
 
     public boolean isGroupExpansionChanging() {
         if (isChildInGroup()) {
@@ -673,6 +679,21 @@ public class ExpandableNotificationRow extends ActivatableNotificationView {
         mPublicLayout.reInflateViews();
     }
 
+    private final IThemeCallback mThemeCallback = new IThemeCallback.Stub() {
+
+        @Override
+        public void onThemeChanged(int themeMode, int color) {
+            mHandler.post(() -> {
+                reInflateViews();
+            });
+        }
+
+        @Override
+        public void onCallbackAdded(int themeMode, int color) {
+            // no-op
+        }
+    };
+
     public void setContentBackground(int customBackgroundColor, boolean animate,
             NotificationContentView notificationContentView) {
         if (getShowingLayout() == notificationContentView) {
@@ -804,6 +825,11 @@ public class ExpandableNotificationRow extends ActivatableNotificationView {
         super(context, attrs);
         mFalsingManager = FalsingManager.getInstance(context);
         initDimens();
+
+        mThemeManager = (ThemeManager) context.getSystemService(Context.THEME_SERVICE);
+        if (mThemeManager != null) {
+            mThemeManager.addCallback(mThemeCallback);
+        }
     }
 
     private void initDimens() {
