@@ -18,6 +18,7 @@
 <resources>
     <!-- Pixel theme -->
     <color name="pixel_primary_color">#242424</color>
+    <color name="pixel_secondary_color">#3a3a3a</color>
 
     <!-- Floating action button -->
     <color name="fab_color">?android:attr/colorAccent</color>

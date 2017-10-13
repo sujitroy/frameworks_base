@@ -19,6 +19,8 @@ package com.android.systemui.recents;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
+import android.app.IThemeCallback;
+import android.app.ThemeManager;
 import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,6 +30,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -117,6 +120,9 @@ public class RecentsActivity extends Activity implements ViewTreeObserver.OnPreD
     private RecentsView mRecentsView;
     private SystemBarScrimViews mScrimViews;
     private View mIncompatibleAppOverlay;
+
+    private int mTheme;
+    private ThemeManager mThemeManager;
 
     // Runnables to finish the Recents activity
     private Intent mHomeIntent;
@@ -303,9 +309,40 @@ public class RecentsActivity extends Activity implements ViewTreeObserver.OnPreD
         return false;
     }
 
+    private final IThemeCallback mThemeCallback = new IThemeCallback.Stub() {
+
+        @Override
+        public void onThemeChanged(int themeMode, int color) {
+            onCallbackAdded(themeMode, color);
+            RecentsActivity.this.runOnUiThread(() -> {
+                RecentsActivity.this.recreate();
+            });
+        }
+
+        @Override
+        public void onCallbackAdded(int themeMode, int color) {
+            mTheme = color;
+        }
+    };
+
     /** Called with the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        final int themeMode = Secure.getInt(getContentResolver(),
+                Secure.THEME_PRIMARY_COLOR, 0);
+        final int accentColor = Secure.getInt(getContentResolver(),
+                Secure.THEME_ACCENT_COLOR, 0);
+        mThemeManager = (ThemeManager) getSystemService(Context.THEME_SERVICE);
+        if (mThemeManager != null) {
+            mThemeManager.addCallback(mThemeCallback);
+        }
+        if (themeMode != 0 || accentColor != 0) {
+            getTheme().applyStyle(mTheme, true);
+        }
+        if (themeMode == 2) {
+            getTheme().applyStyle(R.style.recents_pixel_theme, true);
+        }
+
         super.onCreate(savedInstanceState);
         mFinishedOnStartup = false;
 
