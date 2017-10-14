@@ -16,6 +16,8 @@
 
 package com.android.server.am;
 
+import android.app.IThemeCallback;
+import android.app.ThemeManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -58,6 +60,9 @@ final class AppErrorDialog extends BaseErrorDialog implements View.OnClickListen
 
     // 5-minute timeout, then we automatically dismiss the crash dialog
     static final long DISMISS_TIMEOUT = 1000 * 60 * 5;
+
+    private int sTheme;
+    private ThemeManager mThemeManager;
 
     public AppErrorDialog(Context context, ActivityManagerService service, Data data) {
         super(context);
@@ -108,6 +113,19 @@ final class AppErrorDialog extends BaseErrorDialog implements View.OnClickListen
         super.onCreate(savedInstanceState);
         final FrameLayout frame = (FrameLayout) findViewById(android.R.id.custom);
         final Context context = getContext();
+
+        final int themeMode = Settings.Secure.getInt(context.getContentResolver(),
+                Settings.Secure.THEME_PRIMARY_COLOR, 0);
+        final int accentColor = Settings.Secure.getInt(context.getContentResolver(),
+                Settings.Secure.THEME_ACCENT_COLOR, 0);
+        mThemeManager = (ThemeManager) context.getSystemService(Context.THEME_SERVICE);
+        if (mThemeManager != null) {
+            mThemeManager.addCallback(mThemeCallback);
+        }
+        if (themeMode != 0 || accentColor != 0) {
+            context.getTheme().applyStyle(sTheme, true);
+        }
+
         LayoutInflater.from(context).inflate(
                 com.android.internal.R.layout.app_error_dialog, frame, true);
 
@@ -132,6 +150,19 @@ final class AppErrorDialog extends BaseErrorDialog implements View.OnClickListen
 
         findViewById(com.android.internal.R.id.customPanel).setVisibility(View.VISIBLE);
     }
+
+    private final IThemeCallback mThemeCallback = new IThemeCallback.Stub() {
+
+        @Override
+        public void onThemeChanged(int themeMode, int color) {
+            onCallbackAdded(themeMode, color);
+        }
+
+        @Override
+        public void onCallbackAdded(int themeMode, int color) {
+            sTheme = color;
+        }
+    };
 
     @Override
     public void onStart() {
