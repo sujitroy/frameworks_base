@@ -339,7 +339,7 @@ public class RecentsActivity extends Activity implements ViewTreeObserver.OnPreD
         if (themeMode != 0 || accentColor != 0) {
             getTheme().applyStyle(mTheme, true);
         }
-        if (themeMode == 2) {
+        if (themeMode == 1 || themeMode == 3) {
             getTheme().applyStyle(R.style.recents_pixel_theme, true);
         }
 
