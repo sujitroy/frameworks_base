@@ -21,6 +21,7 @@ import android.os.UserHandle;
 import com.android.internal.R;
 
 import android.app.AlertDialog;
+import android.app.ThemeManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
@@ -29,8 +30,12 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.PorterDuff;
 import android.os.Parcel;
+import android.provider.Settings;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -147,6 +152,8 @@ public class AppSecurityPermissions {
         public void setPermission(MyPermissionGroupInfo grp, MyPermissionInfo perm,
                 boolean first, CharSequence newPermPrefix, String packageName,
                 boolean showRevokeUI) {
+            final int themeMode = Settings.Secure.getInt(getContext().getContentResolver(),
+                Settings.Secure.THEME_PRIMARY_COLOR, 0);
             mGroup = grp;
             mPerm = perm;
             mShowRevokeUI = showRevokeUI;
@@ -179,10 +186,19 @@ public class AppSecurityPermissions {
             setOnClickListener(this);
             if (localLOGV) Log.i(TAG, "Made perm item " + perm.name
                     + ": " + label + " in group " + grp.name);
+            if (!ThemeManager.isOverlayEnabled()) {
+                if (themeMode == 1 || themeMode == 3) {
+                    permGrpIcon.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+                } else {
+                    permGrpIcon.clearColorFilter();
+                }
+            }
         }
 
         @Override
         public void onClick(View v) {
+            final int themeMode = Settings.Secure.getInt(getContext().getContentResolver(),
+                Settings.Secure.THEME_PRIMARY_COLOR, 0);
             if (mGroup != null && mPerm != null) {
                 if (mDialog != null) {
                     mDialog.dismiss();
@@ -207,8 +223,16 @@ public class AppSecurityPermissions {
                     sbuilder.append(mPerm.name);
                     builder.setMessage(sbuilder.toString());
                 }
+                Drawable icon = mGroup.loadGroupIcon(getContext(), pm);
+                if (!ThemeManager.isOverlayEnabled()) {
+                    if (themeMode == 1 || themeMode == 3) {
+                        icon.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+                    } else {
+                        icon.clearColorFilter();
+                    }
+                }
                 builder.setCancelable(true);
-                builder.setIcon(mGroup.loadGroupIcon(getContext(), pm));
+                builder.setIcon(icon);
                 addRevokeUIIfNecessary(builder);
                 mDialog = builder.show();
                 mDialog.setCanceledOnTouchOutside(true);
