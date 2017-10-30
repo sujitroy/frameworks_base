@@ -28,6 +28,7 @@ import android.hardware.camera2.legacy.ParameterUtils.ZoomData;
 import android.hardware.camera2.params.MeteringRectangle;
 import android.hardware.camera2.utils.ListUtils;
 import android.hardware.camera2.utils.ParamsUtils;
+import android.os.SystemProperties;
 import android.util.Log;
 import android.util.Size;
 
@@ -228,7 +229,7 @@ public class LegacyResultMapper {
          */
         // lens.focusDistance
         {
-            if (Parameters.FOCUS_MODE_INFINITY.equals(params.getFocusMode())) {
+            if ((Parameters.FOCUS_MODE_INFINITY.equals(params.getFocusMode())) || ("1".equals(SystemProperties.get("persist.camera.GC.hack")))) {
                 result.set(CaptureResult.LENS_FOCUS_DISTANCE, 0.0f);
             }
         }
