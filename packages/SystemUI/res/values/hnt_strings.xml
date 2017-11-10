@@ -90,4 +90,9 @@
     <!-- Screenrecord QS tile -->
     <string name="quick_settings_screenrecord">Screenrecord</string>
     <string name="quick_settings_screenrecord_on">Recording ...</string>
+
+    <string name="cpuinfo_cpu_title">"cpu:"</string>
+    <string name="cpuinfo_freq">" MHz"</string>
+    <string name="cpuinfo_temp_title">"Temp: "</string>
+    <string name="cpuinfo_temp">" °C"</string>
 </resources>
