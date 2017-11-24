@@ -40,6 +40,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.media.AudioManager;
 import android.media.MediaActionSound;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -726,6 +727,7 @@ class GlobalScreenshot {
                 // Play the shutter sound to notify that we've taken a screenshot
                 if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREENSHOT_SOUND, 1) == 1) {
                     if (mScreenshotSound != null) {
+                        mScreenshotSound.setStreamType(AudioManager.STREAM_SYSTEM);
                         mScreenshotSound.play();
                     }
                 }
